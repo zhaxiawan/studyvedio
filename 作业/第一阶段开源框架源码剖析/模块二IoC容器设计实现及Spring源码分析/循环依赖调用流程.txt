@@ -1,0 +1,24 @@
+org.springframework.context.support.ClassPathXmlApplicationContext# ClassPathXmlApplicationContext()
+    org.springframework.context.support.AbstractApplicationContext#refresh()
+	    -->finishBeanFactoryInitialization()
+	    org.springframework.beans.factory.support.DefaultListableBeanFactory#preInstantiateSingletons()
+		    org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean()
+			    org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean()
+				    -->doCreateBean()
+				    org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingletonFactory() A  1放入三级缓存
+					-->populateBean()-->applyPropertyValues()
+					                    org.springframework.beans.factory.support.BeanDefinitionValueResolver#resolveValueIfNecessary()
+										-->resolveReference()
+										   org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean() B 2 创建B寻找A
+										       org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBean()
+											   -->doCreateBean()
+											   org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#addSingletonFactory() 
+					                           -->populateBean()-->applyPropertyValues()
+											                       org.springframework.beans.factory.support.BeanDefinitionValueResolver#resolveValueIfNecessary()
+										                           -->resolveReference()
+																      org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean() A
+																	      org.springframework.beans.factory.support.DefaultSingletonBeanRegistry#getSingleton() A 3放入二级缓存，删除三级缓存
+																		      org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#getEarlyBeanReference()
+											   -->addSingleton()B 4将其放入一级缓存，5依次返回，将B填充到A的属性里边
+											 
+					
